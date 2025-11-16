@@ -1,5 +1,5 @@
 import { BattleEngine } from '../src/battle/battle-engine';
-import { RandomService } from '../src/battle/random.service';
+import { RandomService } from '../src/common/random.service';
 import { Character, CharacterStatus } from '../src/character/character.entity';
 import { JobType } from '../src/jobs/job-definitions';
 

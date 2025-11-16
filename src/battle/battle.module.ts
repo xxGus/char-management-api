@@ -3,7 +3,7 @@ import { CharacterModule } from '../character/character.module';
 import { BattleController } from './battle.controller';
 import { BattleService } from './battle.service';
 import { BattleEngine } from './battle-engine';
-import { RandomService } from './random.service';
+import { RandomService } from '../common/random.service';
 
 @Module({
   imports: [CharacterModule],

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Character, CharacterStatus } from '../character/character.entity';
-import { RandomService } from './random.service';
+import { RandomService } from '../common/random.service';
 
 export interface BattleLog {
   winner: Character;

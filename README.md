@@ -122,10 +122,11 @@ Response:
 Battles obey the specified initiative rolls, damage calculations, and log format. Winners keep their remaining HP, losers are marked dead.
 
 ## Architecture
-- **AppModule** wires MemoryStorage, Character, and Battle modules.
+- **AppModule** wires MemoryStorage, Character, Jobs, and Battle modules.
 - **storage/** provides `MemoryStorageService`, a singleton in-memory repository for characters.
 - **character/** encapsulates DTO validation, job definitions, name validation, entity interfaces, service logic, and the REST controller.
-- **battle/** contains the controller, service, deterministic `BattleEngine`, and `RandomService` abstraction so randomness can be mocked in tests.
+- **battle/** contains the controller, service, and deterministic `BattleEngine` that relies on the shared `RandomService` (in `common/`) so randomness can be mocked in tests.
+- **jobs/** exposes job metadata for creation requests plus the `/jobs` endpoint that powers frontend cards.
 - **tests/** includes Jest unit tests for character creation, modifier calculations, initiative rerolls, damage application, death detection, and an end-to-end style battle log test.
 
 All services are framework-friendly singletons injected via NestJS DI, fulfilling the clean architecture and in-memory state requirements.
