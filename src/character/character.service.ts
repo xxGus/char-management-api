@@ -7,7 +7,7 @@ import {
   calculateAttackModifier,
   calculateSpeedModifier,
   getJobDefinition
-} from './job-definitions';
+} from '../jobs/job-definitions';
 import { CreateCharacterDto } from './dto/create-character.dto';
 import { NameValidator } from './validation/name-validator';
 

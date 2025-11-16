@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { CharacterService } from '../src/character/character.service';
 import { MemoryStorageModule } from '../src/storage/memory-storage.module';
-import { JobType } from '../src/character/job-definitions';
+import { JobType } from '../src/jobs/job-definitions';
 import { CreateCharacterDto } from '../src/character/dto/create-character.dto';
 import { BadRequestException } from '@nestjs/common';
 

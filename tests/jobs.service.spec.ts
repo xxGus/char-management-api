@@ -7,7 +7,7 @@ describe('JobsService', () => {
     service = new JobsService();
   });
 
-  it('returns exactly three jobs with required properties', () => {
+  it('returns exactly three jobs with stats embedded', () => {
     const jobs = service.getJobs();
     expect(jobs).toHaveLength(3);
 
@@ -15,10 +15,12 @@ describe('JobsService', () => {
       expect(job).toEqual(
         expect.objectContaining({
           name: expect.any(String),
-          lifePoints: expect.any(Number),
-          strength: expect.any(Number),
-          dexterity: expect.any(Number),
-          intelligence: expect.any(Number),
+          stats: expect.objectContaining({
+            hp: expect.any(Number),
+            str: expect.any(Number),
+            dex: expect.any(Number),
+            int: expect.any(Number)
+          }),
           attackFormula: expect.any(String),
           speedFormula: expect.any(String)
         })

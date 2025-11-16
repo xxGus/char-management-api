@@ -1,4 +1,4 @@
-import { CharacterStats } from './character.entity';
+import { CharacterStats } from '../character/character.entity';
 
 export enum JobType {
   Warrior = 'Warrior',

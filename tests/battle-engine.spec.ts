@@ -1,7 +1,7 @@
 import { BattleEngine } from '../src/battle/battle-engine';
 import { RandomService } from '../src/battle/random.service';
 import { Character } from '../src/character/character.entity';
-import { JobType } from '../src/character/job-definitions';
+import { JobType } from '../src/jobs/job-definitions';
 
 class QueueRandomService extends RandomService {
   private queue: number[];

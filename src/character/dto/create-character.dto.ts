@@ -1,5 +1,5 @@
 import { IsEnum, Matches, MaxLength, MinLength } from 'class-validator';
-import { JobType } from '../job-definitions';
+import { JobType } from '../../jobs/job-definitions';
 
 export class CreateCharacterDto {
   @Matches(/^[A-Za-z_]+$/, {

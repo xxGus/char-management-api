@@ -3,7 +3,7 @@ import {
   calculateAttackModifier,
   calculateSpeedModifier,
   getJobDefinition
-} from '../src/character/job-definitions';
+} from '../src/jobs/job-definitions';
 
 describe('Job modifier calculations', () => {
   it('computes warrior modifiers correctly', () => {

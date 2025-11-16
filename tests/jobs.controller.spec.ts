@@ -5,10 +5,7 @@ import { JobsService } from '../src/jobs/jobs.service';
 const mockJobs = [
   {
     name: 'Warrior',
-    lifePoints: 20,
-    strength: 10,
-    dexterity: 5,
-    intelligence: 5,
+    stats: { hp: 20, str: 10, dex: 5, int: 5 },
     attackFormula: 'mock attack',
     speedFormula: 'mock speed'
   }
@@ -31,8 +28,21 @@ describe('JobsController', () => {
     service = moduleRef.get(JobsService);
   });
 
-  it('returns jobs res from service', () => {
-    expect(controller.getJobs()).toEqual(mockJobs);
+  it('maps service stats into API response shape', () => {
+    expect(controller.getJobs()).toEqual({
+      success: true,
+      jobs: [
+        {
+          name: 'Warrior',
+          lifePoints: 20,
+          strength: 10,
+          dexterity: 5,
+          intelligence: 5,
+          attackFormula: 'mock attack',
+          speedFormula: 'mock speed'
+        }
+      ]
+    });
     expect(service.getJobs).toHaveBeenCalledTimes(1);
   });
 });

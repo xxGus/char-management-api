@@ -1,4 +1,4 @@
-import { JobType } from './job-definitions';
+import { JobType } from '../jobs/job-definitions';
 
 export interface CharacterStats {
   hp: number;
