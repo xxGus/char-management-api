@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { MemoryStorageService } from '../storage/memory-storage.service';
-import { Character } from './character.entity';
+import { Character, CharacterStatus } from './character.entity';
 import {
   JobType,
   calculateAttackModifier,
@@ -14,6 +14,22 @@ import { NameValidator } from './validation/name-validator';
 @Injectable()
 export class CharacterService {
   constructor(private readonly storage: MemoryStorageService) {}
+
+  listPaginated(page: number, limit: number) {
+    const all = this.storage.getAllCharacters();
+    const total = all.length;
+    const sanitizedLimit = limit < 1 ? 1 : limit;
+    const sanitizedPage = page < 1 ? 1 : page;
+    const start = (sanitizedPage - 1) * sanitizedLimit;
+    const items = all.slice(start, start + sanitizedLimit);
+
+    return {
+      total,
+      page: sanitizedPage,
+      limit: sanitizedLimit,
+      items
+    };
+  }
 
   createCharacter(dto: CreateCharacterDto): Character {
     try {
@@ -41,15 +57,11 @@ export class CharacterService {
       currentHp: stats.hp,
       attackModifier,
       speedModifier,
-      alive: true
+      status: CharacterStatus.Alive
     };
 
     this.storage.saveCharacter(character);
     return character;
-  }
-
-  findAll(): Character[] {
-    return this.storage.getAllCharacters();
   }
 
   findOne(id: string): Character {

@@ -7,6 +7,11 @@ export interface CharacterStats {
   int: number;
 }
 
+export enum CharacterStatus {
+  Alive = 'alive',
+  Dead = 'dead'
+}
+
 export interface Character {
   id: string;
   name: string;
@@ -16,5 +21,5 @@ export interface Character {
   currentHp: number;
   attackModifier: number;
   speedModifier: number;
-  alive: boolean;
+  status: CharacterStatus;
 }

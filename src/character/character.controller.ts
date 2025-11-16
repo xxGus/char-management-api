@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CharacterService } from './character.service';
 import { CreateCharacterDto } from './dto/create-character.dto';
+import { ListCharactersQueryDto } from './dto/list-characters-query.dto';
 
 @Controller('character')
 export class CharacterController {
@@ -12,15 +13,24 @@ export class CharacterController {
   }
 
   @Get('list')
-  list() {
-    return this.characterService.findAll().map((character) => ({
-      id: character.id,
-      name: character.name,
-      job: character.job,
-      alive: character.alive,
-      status: character.alive ? 'alive' : 'dead'
-    }));
-  }   
+  list(@Query() query: ListCharactersQueryDto) {
+    const paginated = this.characterService.listPaginated(query.page, query.limit);
+    const totalPages = paginated.total === 0 ? 1 : Math.ceil(paginated.total / paginated.limit);
+    return {
+      pagination: {
+        total: paginated.total,
+        page: paginated.page,
+        limit: paginated.limit,
+        totalPages
+      },
+      data: paginated.items.map((character) => ({
+        id: character.id,
+        name: character.name,
+        job: character.job,
+        status: character.status
+      }))
+    };
+  }
 
   @Get(':id')
   getDetails(@Param('id') id: string) {
@@ -34,7 +44,7 @@ export class CharacterController {
       stats: character.stats,
       attackModifier: character.attackModifier,
       speedModifier: character.speedModifier,
-      alive: character.alive
+      status: character.status
     };
   }
 }

@@ -22,24 +22,42 @@ Unit tests cover character creation flows, modifier calculations, battle engine 
 ## API Overview
 
 ### Create Character
-`POST /characters`
+`POST /character`
 ```json
 {
   "name": "Artemis",
   "job": "Warrior"
 }
 ```
-Response includes the generated id, stats, HP values, attack and speed modifiers, and alive flag.
+Response includes the generated id, stats, HP values, attack and speed modifiers, and a `status` field that indicates whether the character is alive or dead.
 
 ### List Characters
-`GET /characters`
+`GET /character/list?page=1&limit=10`
 
-Returns an array of summaries with `id`, `name`, `job`, and `status` (alive or dead).
+Supports pagination with optional `page` (default 1) and `limit` (default 10, max 100). Returns a payload with `pagination` (total records, page, limit, totalPages) and `data`, which contains character summaries (`id`, `name`, `job`, `status`).
+```json
+{
+  "pagination": {
+    "total": 32,
+    "page": 2,
+    "limit": 10,
+    "totalPages": 4
+  },
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Artemis",
+      "job": "Warrior",
+      "status": "alive"
+    }
+  ]
+}
+```
 
 ### Character Details
-`GET /characters/{id}`
+`GET /character/{id}`
 
-Returns the full character sheet: name, job, HP values, stats (HP, STR, DEX, INT), attack modifier, speed modifier, and alive flag.
+Returns the full character sheet: name, job, HP values, stats (HP, STR, DEX, INT), attack modifier, speed modifier, and `status`.
 
 ### List Jobs
 `GET /jobs`
@@ -51,28 +69,28 @@ Returns the static catalog of playable jobs:
   "jobs": [
     {
       "name": "Warrior",
-      "lifePoints": 20,
-      "strength": 10,
-      "dexterity": 5,
-      "intelligence": 5,
+      "hp": 20,
+      "str": 10,
+      "dex": 5,
+      "int": 5,
       "attackFormula": "80% of Strength + 20% Dexterity",
       "speedFormula": "60% Dexterity + 20% Intelligence"
     },
     {
       "name": "Thief",
-      "lifePoints": 15,
-      "strength": 4,
-      "dexterity": 10,
-      "intelligence": 4,
+      "hp": 15,
+      "str": 4,
+      "dex": 10,
+      "int": 4,
       "attackFormula": "25% of Strength + 100% Dexterity + 25% Intelligence",
       "speedFormula": "80% Dexterity"
     },
     {
       "name": "Mage",
-      "lifePoints": 12,
-      "strength": 5,
-      "dexterity": 6,
-      "intelligence": 10,
+      "hp": 12,
+      "str": 5,
+      "dex": 6,
+      "int": 10,
       "attackFormula": "20% of Strength + 20% Dexterity + 120% Intelligence",
       "speedFormula": "40% Dexterity + 10% Strength"
     }
@@ -92,7 +110,7 @@ Response:
 ```json
 {
   "winner": { "id": "...", "name": "...", "job": "Warrior", "currentHp": 8 },
-  "loser": { "id": "...", "name": "...", "job": "Mage", "currentHp": 0, "alive": false },
+  "loser": { "id": "...", "name": "...", "job": "Mage", "currentHp": 0, "status": "dead" },
   "log": [
     "Battle between ...",
     "... speed was faster ...",

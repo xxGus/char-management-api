@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CharacterService } from '../character/character.service';
 import { BattleEngine } from './battle-engine';
 import { StartBattleDto } from './dto/start-battle.dto';
+import { CharacterStatus } from '../character/character.entity';
 
 @Injectable()
 export class BattleService {
@@ -18,7 +19,7 @@ export class BattleService {
     const characterA = this.characterService.getCharacterOrThrow(dto.characterA);
     const characterB = this.characterService.getCharacterOrThrow(dto.characterB);
 
-    if (!characterA.alive || !characterB.alive) {
+    if (characterA.status === CharacterStatus.Dead || characterB.status === CharacterStatus.Dead) {
       throw new BadRequestException('Both characters must be alive to battle.');
     }
 
@@ -36,7 +37,7 @@ export class BattleService {
         name: result.loser.name,
         job: result.loser.job,
         currentHp: result.loser.currentHp,
-        alive: result.loser.alive
+        status: result.loser.status
       },
       log: result.log
     };

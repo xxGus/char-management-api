@@ -34,10 +34,10 @@ describe('JobsController', () => {
       jobs: [
         {
           name: 'Warrior',
-          lifePoints: 20,
-          strength: 10,
-          dexterity: 5,
-          intelligence: 5,
+          hp: 20,
+          str: 10,
+          dex: 5,
+          int: 5,
           attackFormula: 'mock attack',
           speedFormula: 'mock speed'
         }

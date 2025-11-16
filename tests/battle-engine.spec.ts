@@ -1,6 +1,6 @@
 import { BattleEngine } from '../src/battle/battle-engine';
 import { RandomService } from '../src/battle/random.service';
-import { Character } from '../src/character/character.entity';
+import { Character, CharacterStatus } from '../src/character/character.entity';
 import { JobType } from '../src/jobs/job-definitions';
 
 class QueueRandomService extends RandomService {
@@ -29,7 +29,7 @@ function buildCharacter(name: string, overrides?: Partial<Character>): Character
     currentHp: 10,
     attackModifier: 5,
     speedModifier: 3,
-    alive: true
+    status: CharacterStatus.Alive
   };
   return { ...base, ...overrides };
 }
@@ -44,7 +44,7 @@ describe('BattleEngine', () => {
     const result = engine.runBattle(alpha, beta);
     expect(result.log[1]).toContain('Alpha 3 speed was faster than Beta 1 speed');
     expect(result.log.filter((line) => line.includes('speed was faster'))).toHaveLength(1);
-    expect(result.loser.alive).toBe(false);
+    expect(result.loser.status).toBe(CharacterStatus.Dead);
   });
 
   it('applies rolled damage to the defender HP and logs it', () => {
@@ -64,7 +64,7 @@ describe('BattleEngine', () => {
     const beta = buildCharacter('Beta', { currentHp: 8, maxHp: 8, attackModifier: 3, speedModifier: 2 });
 
     const result = engine.runBattle(alpha, beta);
-    expect(result.loser.alive).toBe(false);
+    expect(result.loser.status).toBe(CharacterStatus.Dead);
     expect(result.loser.currentHp).toBe(0);
   });
 

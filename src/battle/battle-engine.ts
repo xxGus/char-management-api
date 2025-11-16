@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Character } from '../character/character.entity';
+import { Character, CharacterStatus } from '../character/character.entity';
 import { RandomService } from './random.service';
 
 export interface BattleLog {
@@ -17,20 +17,20 @@ export class BattleEngine {
       `Battle between ${characterA.name} (${characterA.job}) - ${characterA.currentHp} HP and ${characterB.name} (${characterB.job}) - ${characterB.currentHp} HP begins!`
     ];
 
-    while (characterA.alive && characterB.alive) {
+    while (characterA.status === CharacterStatus.Alive && characterB.status === CharacterStatus.Alive) {
       const initiative = this.determineInitiative(characterA, characterB);
       log.push(
         `${initiative.first.name} ${initiative.firstRoll} speed was faster than ${initiative.second.name} ${initiative.secondRoll} speed and will begin this round.`
       );
 
       this.performAttack(initiative.first, initiative.second, log);
-      if (!initiative.second.alive) {
+      if (initiative.second.status === CharacterStatus.Dead) {
         break;
       }
       this.performAttack(initiative.second, initiative.first, log);
     }
 
-    const winner = characterA.alive ? characterA : characterB;
+    const winner = characterA.status === CharacterStatus.Alive ? characterA : characterB;
     const loser = winner === characterA ? characterB : characterA;
     log.push(`${winner.name} wins the battle! ${winner.name} still has ${winner.currentHp} HP remaining!`);
 
@@ -56,9 +56,7 @@ export class BattleEngine {
   private performAttack(attacker: Character, defender: Character, log: string[]) {
     const damage = this.randomService.randomInt(attacker.attackModifier);
     defender.currentHp = Math.max(0, defender.currentHp - damage);
-    if (defender.currentHp === 0) {
-      defender.alive = false;
-    }
+    defender.status = defender.currentHp === 0 ? CharacterStatus.Dead : defender.status;
     log.push(`${attacker.name} attacks ${defender.name} for ${damage}, ${defender.name} has ${defender.currentHp} HP remaining.`);
   }
 }
