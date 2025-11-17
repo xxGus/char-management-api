@@ -11,7 +11,7 @@ A production-ready NestJS API that lets you create RPG characters, inspect their
 npm install
 npm run start
 ```
-The API listens on port `3000` by default. For local development without building, run `npm run start:dev`.
+The API is served by NestJS + Fastify on port `3000` by default. For local development without building, run `npm run start:dev`.
 
 ## Testing
 ```bash
