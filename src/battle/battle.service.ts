@@ -3,6 +3,7 @@ import { CharacterService } from '../character/character.service';
 import { BattleEngine } from './battle-engine';
 import { StartBattleDto } from './dto/start-battle.dto';
 import { CharacterStatus } from '../character/character.entity';
+import { BattleResultResponse } from './interfaces/battle-response.interface';
 
 @Injectable()
 export class BattleService {
@@ -11,7 +12,7 @@ export class BattleService {
     private readonly battleEngine: BattleEngine
   ) {}
 
-  startBattle(dto: StartBattleDto) {
+  startBattle(dto: StartBattleDto): BattleResultResponse {
     if (dto.characterA === dto.characterB) {
       throw new BadRequestException('A character cannot battle themselves.');
     }

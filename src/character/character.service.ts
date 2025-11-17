@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
-import { MemoryStorageService } from '../storage/memory-storage.service';
+import { CHARACTER_REPOSITORY, CharacterRepository } from '../storage/interfaces/character-repository.interface';
 import { Character, CharacterStatus } from './character.entity';
 import {
   JobType,
@@ -13,7 +13,10 @@ import { NameValidator } from './validation/name-validator';
 
 @Injectable()
 export class CharacterService {
-  constructor(private readonly storage: MemoryStorageService) {}
+  constructor(
+    @Inject(CHARACTER_REPOSITORY)
+    private readonly storage: CharacterRepository
+  ) {}
 
   listPaginated(page: number, limit: number) {
     const all = this.storage.getAllCharacters();

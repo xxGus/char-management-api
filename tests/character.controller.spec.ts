@@ -30,10 +30,30 @@ describe('CharacterController', () => {
 
   it('calls service.createCharacter when creating', () => {
     const dto = { name: 'Artemis', job: 'Warrior' } as CreateCharacterDto;
-    const created = { id: '1' } as any;
+    const created = {
+      id: '1',
+      name: 'Artemis',
+      job: 'Warrior',
+      currentHp: 20,
+      maxHp: 20,
+      stats: { hp: 20, str: 10, dex: 5, int: 5 },
+      attackModifier: 9,
+      speedModifier: 4,
+      status: CharacterStatus.Alive
+    } as any;
     service.createCharacter.mockReturnValue(created);
 
-    expect(controller.create(dto)).toBe(created);
+    expect(controller.create(dto)).toEqual({
+      id: '1',
+      name: 'Artemis',
+      job: 'Warrior',
+      currentHp: 20,
+      status: CharacterStatus.Alive,
+      maxHp: 20,
+      stats: { hp: 20, str: 10, dex: 5, int: 5 },
+      attackModifier: 9,
+      speedModifier: 4
+    });
     expect(service.createCharacter).toHaveBeenCalledWith(dto);
   });
 

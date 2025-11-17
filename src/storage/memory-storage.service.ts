@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Character } from '../character/character.entity';
+import { CharacterRepository } from './interfaces/character-repository.interface';
 
 @Injectable()
-export class MemoryStorageService {
+export class MemoryStorageService implements CharacterRepository {
   private readonly characters = new Map<string, Character>();
 
   saveCharacter(character: Character): Character {

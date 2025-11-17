@@ -2,7 +2,7 @@ import { Test } from '@nestjs/testing';
 import { BattleService } from '../src/battle/battle.service';
 import { BattleEngine } from '../src/battle/battle-engine';
 import { CharacterService } from '../src/character/character.service';
-import { MemoryStorageService } from '../src/storage/memory-storage.service';
+import { MemoryStorageModule } from '../src/storage/memory-storage.module';
 import { RandomService } from '../src/common/random.service';
 import { CharacterStatus } from '../src/character/character.entity';
 import { JobType } from '../src/jobs/job-definitions';
@@ -36,11 +36,11 @@ describe('BattleService', () => {
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
+      imports: [MemoryStorageModule],
       providers: [
         BattleService,
         BattleEngine,
         CharacterService,
-        MemoryStorageService,
         { provide: RandomService, useClass: ControlledRandomService }
       ]
     }).compile();
