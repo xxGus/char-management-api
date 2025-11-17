@@ -34,7 +34,7 @@ Response includes the generated id, stats, HP values, attack and speed modifiers
 ### List Characters
 `GET /character/list?page=1&limit=10`
 
-Supports pagination with optional `page` (default 1) and `limit` (default 10, max 100). Returns a payload with `pagination` (total records, page, limit, totalPages) and `data`, which contains character summaries (`id`, `name`, `job`, `status`).
+Supports pagination with optional `page` (default 1) and `limit` (default 10, max 100). Returns a payload with `pagination` (total records, page, limit, totalPages) and `data`, which contains character summaries (`id`, `name`, `job`, `currentHp`, `status`).
 ```json
 {
   "pagination": {
@@ -48,6 +48,7 @@ Supports pagination with optional `page` (default 1) and `limit` (default 10, ma
       "id": "uuid",
       "name": "Artemis",
       "job": "Warrior",
+      "currentHp": 12,
       "status": "alive"
     }
   ]
@@ -69,28 +70,34 @@ Returns the static catalog of playable jobs:
   "jobs": [
     {
       "name": "Warrior",
-      "hp": 20,
-      "str": 10,
-      "dex": 5,
-      "int": 5,
+      "stats": {
+        "hp": 20,
+        "str": 10,
+        "dex": 5,
+        "int": 5
+      },
       "attackFormula": "80% of Strength + 20% Dexterity",
       "speedFormula": "60% Dexterity + 20% Intelligence"
     },
     {
       "name": "Thief",
-      "hp": 15,
-      "str": 4,
-      "dex": 10,
-      "int": 4,
+      "stats": {
+        "hp": 15,
+        "str": 4,
+        "dex": 10,
+        "int": 4
+      },
       "attackFormula": "25% of Strength + 100% Dexterity + 25% Intelligence",
       "speedFormula": "80% Dexterity"
     },
     {
       "name": "Mage",
-      "hp": 12,
-      "str": 5,
-      "dex": 6,
-      "int": 10,
+      "stats": {
+        "hp": 12,
+        "str": 5,
+        "dex": 6,
+        "int": 10
+      },
       "attackFormula": "20% of Strength + 20% Dexterity + 120% Intelligence",
       "speedFormula": "40% Dexterity + 10% Strength"
     }
@@ -109,7 +116,7 @@ Returns the static catalog of playable jobs:
 Response:
 ```json
 {
-  "winner": { "id": "...", "name": "...", "job": "Warrior", "currentHp": 8 },
+  "winner": { "id": "...", "name": "...", "job": "Warrior", "currentHp": 8, "status": "alive" },
   "loser": { "id": "...", "name": "...", "job": "Mage", "currentHp": 0, "status": "dead" },
   "log": [
     "Battle between ...",

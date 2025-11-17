@@ -84,4 +84,36 @@ describe('BattleEngine', () => {
     expect(result.winner.name).toBe('Alpha');
     expect(result.log.length).toBeGreaterThan(2);
   });
+
+  it('does not perform a second attack when the first kills the defender', () => {
+    const random = new QueueRandomService([4, 1, 12]);
+    const engine = new BattleEngine(random);
+    const alpha = buildCharacter('Alpha', { attackModifier: 12, speedModifier: 5 });
+    const beta = buildCharacter('Beta', { currentHp: 6, maxHp: 6 });
+
+    const result = engine.runBattle(alpha, beta);
+    const attackLines = result.log.filter((line) => line.includes('attacks'));
+    expect(attackLines).toHaveLength(1);
+    expect(result.loser.status).toBe(CharacterStatus.Dead);
+  });
+
+  it('handles zero-damage attacks correctly', () => {
+    const random = new QueueRandomService([4, 1, 0, 2]);
+    const engine = new BattleEngine(random);
+    const alpha = buildCharacter('Alpha', { attackModifier: 6, speedModifier: 5, currentHp: 2, maxHp: 2 });
+    const beta = buildCharacter('Beta', { currentHp: 10, maxHp: 10, attackModifier: 6, speedModifier: 4 });
+
+    const result = engine.runBattle(alpha, beta);
+    expect(result.log.some((line) => line.includes('for 0'))).toBe(true);
+  });
+
+  it('falls back when both characters have zero speed modifiers', () => {
+    const random = new QueueRandomService([1, 10]);
+    const engine = new BattleEngine(random);
+    const alpha = buildCharacter('Alpha', { speedModifier: 0, attackModifier: 10 });
+    const beta = buildCharacter('Beta', { speedModifier: 0, currentHp: 5, maxHp: 5 });
+
+    const result = engine.runBattle(alpha, beta);
+    expect(result.log[1]).toMatch(/speed was faster/);
+  });
 });

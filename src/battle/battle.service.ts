@@ -30,7 +30,8 @@ export class BattleService {
         id: result.winner.id,
         name: result.winner.name,
         job: result.winner.job,
-        currentHp: result.winner.currentHp
+        currentHp: result.winner.currentHp,
+        status: result.winner.status
       },
       loser: {
         id: result.loser.id,

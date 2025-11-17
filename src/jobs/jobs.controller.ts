@@ -9,10 +9,7 @@ export class JobsController {
   getJobs() {
     const jobs = this.jobsService.getJobs().map(({ name, stats, attackFormula, speedFormula }) => ({
       name,
-      hp: stats.hp,
-      str: stats.str,
-      dex: stats.dex,
-      int: stats.int,
+      stats,
       attackFormula,
       speedFormula
     }));

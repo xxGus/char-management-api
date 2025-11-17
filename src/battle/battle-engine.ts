@@ -38,6 +38,14 @@ export class BattleEngine {
   }
 
   private determineInitiative(characterA: Character, characterB: Character) {
+    if (characterA.speedModifier <= 0 && characterB.speedModifier <= 0) {
+      const fallback = this.randomService.randomInt(1);
+      if (fallback === 0) {
+        return { first: characterA, second: characterB, firstRoll: 1, secondRoll: 0 };
+      }
+      return { first: characterB, second: characterA, firstRoll: 1, secondRoll: 0 };
+    }
+
     let rollA = 0;
     let rollB = 0;
 

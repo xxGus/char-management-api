@@ -27,6 +27,7 @@ export class CharacterController {
         id: character.id,
         name: character.name,
         job: character.job,
+        currentHp: character.currentHp,
         status: character.status
       }))
     };
